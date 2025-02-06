@@ -26,21 +26,25 @@ refs.form.addEventListener('input', e => {
   saveToLS(STORAGE_KEY, data);
 });
 
-function unitPage() {
+function initPage() {
   const formData = loadFromLS(STORAGE_KEY);
   refs.form.elements.email.value = formData?.email || '';
   refs.form.elements.message.value = formData?.message || '';
 }
 
-unitPage();
+initPage();
 
 refs.form.addEventListener('submit', e => {
   e.preventDefault();
-  const formData = {
-    email: refs.form.elements.email.value,
-    message: refs.form.elements.message.value,
-  };
+  const email = refs.form.elements.email.value.trim();
+  const message = refs.form.elements.message.value.trim();
 
+  if (!email || !message) {
+    alert('Будь ласка, заповніть усі поля перед відправленням форми.');
+    return;
+  }
+
+  const formData = { email, message };
   console.log(formData);
   localStorage.removeItem(STORAGE_KEY);
   e.target.reset();
